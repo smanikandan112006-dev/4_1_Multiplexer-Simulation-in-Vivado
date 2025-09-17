@@ -1,4 +1,4 @@
-# SIMULATION AND IMPLEMENTATION OF MULTIPLEXER
+# SIMULATION AND IMPLEMENTATION OF 4:1 MULTIPLEXER
 
 ## AIM
 To design and simulate a 4:1 Multiplexer (MUX) using Verilog HDL in four different modeling styles—Gate-Level, Data Flow, Behavioral, and Structural—and to verify its functionality through a testbench using the Vivado 2023.1 simulation environment. The experiment aims to understand how different abstraction levels in Verilog can be used to describe the same digital logic circuit and analyze their performance.
@@ -7,44 +7,17 @@ To design and simulate a 4:1 Multiplexer (MUX) using Verilog HDL in four differe
 - **Vivado 2023.1**
 
 ## Procedure
-### Launch Vivado
-- Open Vivado 2023.1 from the Start menu or desktop icon.
 
-### Create a New Project
-1. Click **"Create Project"**.
-2. Enter the project name (e.g., `Mux4_to_1`) and choose a location. Click **Next**.
-3. Select **RTL Project** and click **Next**.
-4. Add Verilog files (e.g., `mux4_to_1_gate.v`, `mux4_to_1_dataflow.v`) and enable **"Copy sources into project"**. Click **Next**.
-5. Skip the Constraints step and proceed.
-6. Select a default FPGA part (e.g., `xc7a35ticsg324-1L`). Click **Next**, then **Finish**.
-
-### Add Source Files (if needed)
-- In the Sources window, right-click on **"Design Sources"** → **Add Sources**.
-- Add Verilog files and the testbench (`mux4_to_1_tb.v`).
-
-### Check Syntax
-- In the Flow Navigator, under **Synthesis**, click **"Run Synthesis"**.
-- Correct any errors or warnings, then re-run the synthesis.
-
-### Simulate the Design
-- In the Flow Navigator, under **Simulation**, click **"Run Behavioral Simulation"**.
-
-### Analyze Simulation Results
-- View waveform signals (e.g., `S1`, `S0`, `A`, `B`, `C`, `D`, etc.).
-- Use the waveform controls to zoom, scroll, and analyze results.
-
-### Adjust Simulation Time
-- Click **"Simulation"** → **"Simulation Settings"** to modify the run time (e.g., 1000ns).
-
-### Generate Report
-- Right-click the simulation window → **"Export Simulation Results"**.
-
-### Save and Document
-- Click **File** → **Save Project**.
-- Capture screenshots of the waveform window for your lab report.
-
-### Close Simulation
-- Go to **"Simulation"** → **"Close Simulation"** when finished.
+1. Open **Vivado 2023.1**.  
+2. Create a **New RTL Project** and give a name (e.g., `Mux4_to_1`).  
+3. Add/create your Verilog files and testbench.  
+4. Select an FPGA part (e.g., `xc7a35ticsg324-1L`).  
+5. Run **Synthesis** to check for errors.  
+6. Run **Simulation** → **Run Behavioral Simulation**.  
+7. Observe the waveforms of inputs and outputs.  
+8. Adjust simulation time if needed (e.g., 1000ns).  
+9. Save the project and take screenshots of results.  
+10. Close simulation.  
 
 ---
 
@@ -62,54 +35,105 @@ To design and simulate a 4:1 Multiplexer (MUX) using Verilog HDL in four differe
 
 ### 4:1 MUX Gate-Level Implementation
 ```verilog
-module mux4_to_1_gate (
-    input wire A,
-    input wire B,
-    input wire C,
-    input wire D,
-    input wire S0,
-    input wire S1,
+// Gate Level Modelling - Skeleton
+module mux4_gate (
+    input  wire I0, I1, I2, I3,
+    input  wire S0, S1,
     output wire Y
 );
-    wire not_S0, not_S1;
-    wire A_and, B_and, C_and, D_and;
+    // Declare internal wires
 
-    not (not_S0, S0);
-    not (not_S1, S1);
+    // Write NOT gates
 
-    and (A_and, A, not_S1, not_S0);
-    and (B_and, B, not_S1, S0);
-    and (C_and, C, S1, not_S0);
-    and (D_and, D, S1, S0);
+    // Write AND gates
 
-    or (Y, A_and, B_and, C_and, D_and);
+    // Write OR gate
+
+endmodule
+
+```
+### 4:1 MUX Gate-Level Implementation- Testbench
+```verilog
+// Testbench Skeleton
+`timescale 1ns/1ps
+module tb_mux4_gate;
+
+    // Declare testbench signals
+    reg I0, I1, I2, I3;
+    reg S0, S1;
+    wire Y;
+
+    // Instantiate DUT
+    mux4_gate uut (
+        .I0(I0), .I1(I1), .I2(I2), .I3(I3),
+        .S0(S0), .S1(S1),
+        .Y(Y)
+    );
+
+    initial begin
+        // Initialize inputs
+
+        // Apply test cases
+
+        // Stop simulation
+        #10 $stop;
+    end
+
 endmodule
 ```
 ## Simulated Output Gate Level Modelling
 
 _______ Here Paste the Simulated output  ___________
 
-### 4:1 MUX Data Flow Implementation
+---
+### 4:1 MUX Data flow Modelling
 ```verilog
-module mux4_to_1_dataflow (
-    input wire A,
-    input wire B,
-    input wire C,
-    input wire D,
-    input wire S0,
-    input wire S1,
+// Dataflow Modelling - Skeleton
+module mux4_dataflow (
+    input  wire I0, I1, I2, I3,
+    input  wire S0, S1,
     output wire Y
 );
-    assign Y = (~S1 & ~S0 & A) |
-               (~S1 & S0 & B) |
-               (S1 & ~S0 & C) |
-               (S1 & S0 & D);
+    // Write assign statement using operators
+
 endmodule
+
 ```
-## Simulated Output Data Flow Modelling
+### 4:1 MUX Data flow Modelling- Testbench
+```verilog
+// Testbench Skeleton
+`timescale 1ns/1ps
+module tb_mux4_dataflow;
+
+    // Declare testbench signals
+    reg I0, I1, I2, I3;
+    reg S0, S1;
+    wire Y;
+
+    // Instantiate DUT
+    mux4_dataflow uut (
+        .I0(I0), .I1(I1), .I2(I2), .I3(I3),
+        .S0(S0), .S1(S1),
+        .Y(Y)
+    );
+
+    initial begin
+        // Initialize inputs
+
+        // Apply test cases
+
+        // Stop simulation
+        #10 $stop;
+    end
+
+endmodule
+
+```
+## Simulated Output Dataflow Modelling
 
 _______ Here Paste the Simulated output  ___________
 
+---
 ### 4:1 MUX Behavioral Implementation
 ```verilog
 module mux4_to_1_behavioral (
@@ -122,15 +146,39 @@ module mux4_to_1_behavioral (
     output reg Y
 );
     always @(*) begin
-        case ({S1, S0})
-            2'b00: Y = A;
-            2'b01: Y = B;
-            2'b10: Y = C;
-            2'b11: Y = D;
-            default: Y = 1'bx;
-        endcase
+        
     end
 endmodule
+```
+### 4:1 MUX Behavioral Modelling- Testbench
+```verilog
+// Testbench Skeleton
+`timescale 1ns/1ps
+module tb_mux4_behavioral;
+
+    // Declare testbench signals
+    reg I0, I1, I2, I3;
+    reg S0, S1;
+    wire Y;
+
+    // Instantiate DUT
+    mux4_behavioral uut (
+        .I0(I0), .I1(I1), .I2(I2), .I3(I3),
+        .S0(S0), .S1(S1),
+        .Y(Y)
+    );
+
+    initial begin
+        // Initialize inputs
+
+        // Apply test cases
+
+        // Stop simulation
+        #10 $stop;
+    end
+
+endmodule
+
 ```
 ## Simulated Output Behavioral Modelling
 
@@ -169,10 +217,6 @@ module mux4_to_1_structural (
     mux2_to_1 mux_final (.A(mux_low), .B(mux_high), .S(S1), .Y(Y));
 endmodule
 ```
-## Simulated Output Structural Modelling
-
-_______ Here Paste the Simulated output  ___________
-
 ### Testbench Implementation
 ```verilog
 `timescale 1ns / 1ps
@@ -202,11 +246,10 @@ module mux4_to_1_tb;
     end
 endmodule
 ```
-### SAMPLE OUTPUT
-```verilog
-Time=0 | S1=0 S0=0 | Y_gate=0 | Y_dataflow=0 | Y_behavioral=0 | Y_structural=0
-Time=10 | S1=0 S0=1 | Y_gate=0 | Y_dataflow=0 | Y_behavioral=0 | Y_structural=0
-Time=20 | S1=1 S0=0 | Y_gate=0 | Y_dataflow=0 | Y_behavioral=0 | Y_structural=0
+## Simulated Output Structural Modelling
+
+_______ Here Paste the Simulated output  ___________
+
 ```
 **CONCLUSION**
 
