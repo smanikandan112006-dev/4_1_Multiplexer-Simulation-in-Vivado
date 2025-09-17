@@ -209,12 +209,10 @@ module mux4_to_1_structural (
     input wire S1,
     output wire Y
 );
-    wire mux_low, mux_high;
 
-    mux2_to_1 mux0 (.A(A), .B(B), .S(S0), .Y(mux_low));
-    mux2_to_1 mux1 (.A(C), .B(D), .S(S0), .Y(mux_high));
 
-    mux2_to_1 mux_final (.A(mux_low), .B(mux_high), .S(S1), .Y(Y));
+
+
 endmodule
 ```
 ### Testbench Implementation
@@ -225,24 +223,16 @@ module mux4_to_1_tb;
     reg A, B, C, D, S0, S1;
     wire Y_gate, Y_dataflow, Y_behavioral, Y_structural;
 
-    mux4_to_1_gate uut_gate (.A(A), .B(B), .C(C), .D(D), .S0(S0), .S1(S1), .Y(Y_gate));
-    mux4_to_1_dataflow uut_dataflow (.A(A), .B(B), .C(C), .D(D), .S0(S0), .S1(S1), .Y(Y_dataflow));
-    mux4_to_1_behavioral uut_behavioral (.A(A), .B(B), .C(C), .D(D), .S0(S0), .S1(S1), .Y(Y_behavioral));
-    mux4_to_1_structural uut_structural (.A(A), .B(B), .C(C), .D(D), .S0(S0), .S1(S1), .Y(Y_structural));
+    
 
     initial begin
         A = 0; B = 0; C = 0; D = 0; S0 = 0; S1 = 0;
 
-        #10 {S1, S0, A, B, C, D} = 6'b00_0001;
-        #10 {S1, S0, A, B, C, D} = 6'b01_0010;
-        #10 {S1, S0, A, B, C, D} = 6'b10_0100;
-        #10 {S1, S0, A, B, C, D} = 6'b11_1000;
+      
         #10 $stop;
     end
 
-    initial begin
-        $monitor("Time=%0t | S1=%b S0=%b | Y_gate=%b | Y_dataflow=%b | Y_behavioral=%b | Y_structural=%b",
-                 $time, S1, S0, Y_gate, Y_dataflow, Y_behavioral, Y_structural);
+   
     end
 endmodule
 ```
@@ -250,8 +240,8 @@ endmodule
 
 _______ Here Paste the Simulated output  ___________
 
-```
-**CONCLUSION**
+---
+### CONCLUSION
 
 In this experiment, a 4:1 Multiplexer was successfully designed and simulated using Verilog HDL across four different modeling styles: Gate-Level, Data Flow, Behavioral, and Structural.The simulation results verified the correct functionality of the MUX, with all implementations producing identical outputs for the given input conditions.
 
